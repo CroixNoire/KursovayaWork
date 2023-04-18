@@ -1,0 +1,345 @@
+#include <iostream>
+#include <stdio.h>
+#include <string>
+#include <windows.h>
+#include <fstream>
+#include <conio.h>
+using namespace std;
+
+void Clean()
+{
+	system("cls");
+}
+
+void HelloWorld()
+{
+	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleCursorPosition(hStdOut,{ 50, 12 });
+	cout << "Добро пожаловать в курсовую работу!\n";
+	_getch();
+}
+
+struct ExamsResultClass
+{
+	unsigned short Math;
+	unsigned short ProgLang;
+	unsigned short PC;
+};
+
+struct StudDate
+{
+	unsigned short day;
+	unsigned short month;
+	unsigned short year;
+};
+
+struct StudentNode
+{
+	string surName;
+	string name;
+	string middleName;
+	string faculty;
+	string department;
+	string group;
+	string recordNardNumber;
+	string birthDateString;
+	StudentNode* next;
+	/*enum Gender
+	{
+		Мужской,
+		Женский
+	};*/
+	string gender;
+	int startYear;
+	int id;
+	struct ExamsResultClass ers;
+	struct StudDate stDate;
+};
+
+void Print(string a)
+{
+	cout << a << endl;
+}
+
+class StudentClass
+{
+	StudentNode* sn;
+
+public:
+	StudentClass()
+	{
+		sn = new StudentNode();
+		addPavel();
+	}
+	StudentNode* getStudentNode()
+	{
+		return sn;
+	}
+	void addPavel()
+	{
+		sn->id = 0;
+		sn->surName = "Кутырев";
+		sn->name = "Павел";
+		sn->middleName = "Алексеевич";
+		sn->faculty = "10.05.03";
+		sn->department = "Институт кибербезопасности и цифровых технологий";
+		sn->group = "БАСО-04-22";
+		sn->recordNardNumber = "22Б0835";
+		sn->gender = "Мужской";
+		sn->startYear = 2022;
+		sn->stDate = { 29, 07, 2004 };
+
+	}
+	void setExamsResultData(ExamsResultClass* er, StudentNode* sn)
+	{
+		sn->ers.Math = er->Math;
+		sn->ers.ProgLang = er->ProgLang;
+		sn->ers.PC= er->PC;
+	}
+	void UpdateMasString(StudentNode* sn)
+	{
+		
+	}
+	bool editGender(bool n)
+	{
+		cout << "Выберите гендер (0 - мужской, 1 - женский): ";
+		cin >> n;
+		switch (n)
+		{
+		case 0:
+			sn->gender = "Мужской";
+			break;
+		case 1:
+			sn->gender = "Женский";
+			break;
+		default:
+			break;
+		}
+	}
+	void editStudent()
+	{
+		bool exit = false;
+		int ch;
+		StudDate d;
+		StudentNode* studDataMenu;
+		studDataMenu = new StudentNode();
+		int resStudDataMenu = 1;
+		const int exitStudDataMenu = 0;
+		while (!exit)
+		{
+			Print((string)"Выберите параметр:");
+			Print((string)"0 - фамилию");
+			Print((string)"1 - имя");
+			Print((string)"2 - отчество");
+			Print((string)"3 - факультет");
+			Print((string)"4 - направление");
+			Print((string)"5 - группа");
+			Print((string)"6 - студ. номер");
+			Print((string)"7 - гендер");
+			Print((string)"8 - год поступления");
+			Print((string)"9 - дата рождения");
+			Print((string)"10 - выйти");
+			cin >> ch;
+			switch (ch)
+			{
+			case 0:
+				Clean();
+				cout << "Введите фамилию: ";
+				cin >> sn->surName;
+				break;
+
+			case 1:
+				Clean();
+				cout << "Введите имя: ";
+				cin >> sn->name;
+				break;
+
+			case 2:
+				Clean();
+				cout << "Введите отчество: ";
+				cin >> sn->middleName;
+				break;
+
+			case 3:
+				Clean();
+				cout << "Введите факультет: ";
+				cin >> sn->faculty;
+				break;
+
+			case 4:
+				Clean();
+				cout << "Введите направление: ";
+				cin >> sn->department;
+				break;
+
+			case 5:
+				Clean();
+				cout << "Введите группу: ";
+				cin >> sn->group;
+				break;
+
+			case 6:
+				Clean();
+				cout << "Введите студенческий номер: ";
+				cin >> sn->recordNardNumber;
+				break;
+
+			case 7:
+				Clean();
+				cout << "Введите гендер: ";
+				cin >> sn->gender;
+				break;
+
+			case 8:
+				Clean();
+				cout << "Введите год поступления: ";
+				cin >> sn->startYear;
+				break;
+
+			case 9:
+				Clean();
+				cout << "Введите день: ";
+				cin >> sn->stDate.day;
+				cout << "Введите месяц: ";
+				cin >> sn->stDate.month;
+				cout << "Введите год: ";
+				cin >> sn->stDate.year;
+				if ((0 < sn->stDate.day < 31 && sn->stDate.month != 2 && 1970 <= sn->stDate.year <= 2016) ||
+					((0 < sn->stDate.day < 29 && sn->stDate.month == 2 && 1970 <= sn->stDate.year <= 2016)))
+				{
+					d = { studDataMenu->stDate.day, studDataMenu->stDate.month, sn->stDate.year };
+				}
+				break;
+
+			case 10:
+				exit = true;
+
+			default:
+				Clean();
+				cout << "Неверное значение" << endl;
+				exit = true;
+			}
+			Clean();
+		}
+		
+	}
+
+	void printStudent()
+	{
+		//StudDate* dd;
+		cout << sn->surName << " | " << sn->name << " | " << sn->middleName << " | " << sn->faculty << " | " << sn->group << " | " << sn->department << " | " << sn->recordNardNumber << /*" | " << dd->day << "." << dd->month << "." << dd->year <<*/ endl;
+	}
+};
+
+void Mode()
+{
+	bool exit = false;
+	StudentClass Studt;
+	int n;
+	while (!exit)
+	{
+		Print((string)"Выберите действие:");
+		Print((string)"1. Добавить студента");
+		Print((string)"2. Отредактировать информацию о студенте");
+		Print((string)"3. Прочитать информацию о студенте");
+		Print((string)"4. Удалить студента");
+		Print((string)"5. Завершить сеанс");
+		Print((string)"=====");
+
+		cin >> n;
+
+		switch (n)
+		{
+		case 1:
+			break;
+		case 2:
+			Clean();
+			Studt.editStudent();
+			break;
+		case 3:
+			Clean();
+			Studt.printStudent();
+			system("pause");
+			break;
+		case 4:
+			break;
+		case 5:
+			Clean();
+			cout << "Сеанс завершён успешно";
+			exit = true;
+			break;
+		default:
+			Clean();
+			cout << "Неверное значение. Программа остановлена";
+			exit = true;
+		}
+		system("cls");
+	}
+	
+}
+
+void First()
+{
+	ifstream file;
+	ofstream copy;
+
+	copy.open("buffer.bin", ios::trunc | ios::out);
+	copy.close();
+	char ID[8];
+	cout << "Введите id студента: ";
+	cin >> ID;
+	file.open("Student.bin", ios::binary);
+	StudentNode tmpst;
+	bool flag = false;
+	while (file.read((char*)&tmpst, sizeof(StudentNode)))
+	{
+		//...
+	}
+}
+
+void Second()
+{
+	ifstream file;
+	StudentNode tmpst;
+	file.open("Student.bin", ios::binary | ios::in);
+	while (file.read((char*)&tmpst, sizeof(StudentNode)))
+	{
+		//...
+	}
+}
+
+int main()
+{
+	//SetConsoleTitle(L"Курсовая работа"); - приколюха с названием консоли
+	//HelloWorld();
+	//system("cls");
+	
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	StudentNode Stud;
+
+	Mode();
+
+	//struct StudentNode Table[6] = {Stud.surName, Stud.name, Stud.middleName}, FileTable[3];
+
+	/*FILE* bin;
+
+	fopen_s(&bin, "Student.bin", "w");
+	for (int i = 0; i < 3; i++)
+	{
+		fwrite((char*)&Table[i], sizeof(StudentNode), 1, bin);
+	}
+	_fcloseall();
+
+	ifstream fout("Student.bin", ios::in | ios::binary);
+	for (int i = 0; i < 3; i++)
+	{
+		fout.read((char*)&FileTable[i], sizeof(StudentNode));
+	}
+	fout.close();
+
+	cout << FileTable->surName << " " << FileTable->name << " " << FileTable->middleName << endl;*/
+
+	return 0;
+}
